@@ -1,0 +1,6 @@
+title: KV/RaMIS Project Group
+description: Сообщество разработчиков свободного ПО
+baseurl: "/kv-ramis-site"  # замените на имя вашего репозитория
+url: "https://1ardor1gaming1.github.io"
+markdown: kramdown
+theme: jekyll-theme-minimal
