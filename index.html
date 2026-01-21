@@ -2,26 +2,36 @@
 <html lang="ru" class="dark-theme">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KV/RaMIS Project Group | Валерий</title>
-    <meta name="description" content="KV/RaMIS Project Group - разработка свободного ПО, операционных систем и мессенджеров. Поддержка GPL, Arch Linux.">
-    <meta name="keywords" content="KV/RaMIS, операционная система, мессенджер, GPL, Arch Linux, разработчик, Валерий">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>KV/RaMIS Project Group | Свободное ПО</title>
     
-    <!-- Inline Critical CSS -->
+    <!-- Оптимизированные мета-теги -->
+    <meta name="description" content="Сообщество разработчиков свободного ПО. Создаём операционные системы, мессенджеры и утилиты с открытым исходным кодом.">
+    <meta name="keywords" content="свободное ПО, open source, GPL, Arch Linux, Rust, Python, C, разработка">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#0a0a14" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7ff" media="(prefers-color-scheme: light)">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Предзагрузка критических ресурсов -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Inline Critical CSS (минимальный) -->
     <style>
-        /* Критический CSS для мгновенной отрисовки */
         :root {
             --bg-primary: #0a0a14;
-            --bg-secondary: #151522;
             --text-primary: #ffffff;
             --accent: #6c63ff;
-            --accent-glow: rgba(108, 99, 255, 0.3);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -30,9 +40,10 @@
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
-            line-height: 1.6;
+            transition: background-color 0.3s ease;
         }
         
+        /* Прелоадер */
         .preloader {
             position: fixed;
             top: 0;
@@ -40,619 +51,575 @@
             width: 100%;
             height: 3px;
             background: rgba(108, 99, 255, 0.1);
-            z-index: 9999;
+            z-index: 10000;
         }
         
         .preloader-progress {
             height: 100%;
             background: linear-gradient(90deg, var(--accent), #ff6b9d);
-            width: 0%;
+            width: 0;
             transition: width 0.3s ease;
         }
         
-        /* Скелетоны для прогрессивной загрузки */
-        .skeleton {
-            background: linear-gradient(90deg, #151522 25%, #1a1a2e 50%, #151522 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 8px;
-            min-height: 20px;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        /* Базовая структура */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
+        /* Базовые утилиты */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
             overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
         
-        .hero-content {
-            max-width: 800px;
-            z-index: 2;
-        }
-        
-        .logo-main {
-            font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), #ff6b9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }
-        
-        .tagline {
-            font-family: monospace;
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 2rem;
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
     </style>
     
-    <!-- Асинхронная загрузка стилей -->
-    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+    <!-- Основные стили (асинхронная загрузка) -->
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'; this.onload=null">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
     
-    <!-- Предзагрузка шрифтов -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Шрифты (оптимизированные) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <!-- Фавикон -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236c63ff%22>⚡</text></svg>">
 </head>
 <body>
     <!-- Прелоадер -->
-    <div class="preloader" id="preloader">
+    <div class="preloader" id="preloader" aria-hidden="true">
         <div class="preloader-progress"></div>
     </div>
-
+    
     <!-- Прогресс скролла -->
-    <div class="scroll-progress"></div>
+    <div class="scroll-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
     
-    <!-- Кнопка темы -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
-        <i class="fas fa-moon"></i>
-    </button>
-    
-    <!-- Кнопка наверх -->
-    <button class="scroll-top" id="scrollTop" aria-label="Наверх">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Главная секция -->
-    <section class="hero" id="hero">
-        <canvas id="particlesCanvas" width="1920" height="1080" aria-hidden="true"></canvas>
+    <!-- Плавающие кнопки управления -->
+    <div class="floating-controls">
+        <!-- Кнопка скрытия панели -->
+        <button class="floating-btn" id="toggleNav" aria-label="Скрыть панель навигации">
+            <i class="fas fa-eye-slash"></i>
+        </button>
         
-        <div class="hero-content">
-            <h1 class="logo-main">KV / RaMIS</h1>
-            <p class="tagline">Project Group</p>
-            <p class="hero-subtitle">Свободное ПО • Открытый код • Сообщество</p>
+        <!-- Кнопка темы -->
+        <button class="floating-btn" id="themeToggle" aria-label="Переключить тему">
+            <i class="fas fa-moon"></i>
+        </button>
+        
+        <!-- Кнопка терминала -->
+        <button class="floating-btn" id="terminalToggle" aria-label="Открыть терминал">
+            <i class="fas fa-terminal"></i>
+        </button>
+        
+        <!-- Кнопка наверх -->
+        <button class="floating-btn" id="scrollTop" aria-label="Наверх">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+    
+    <!-- Панель навигации -->
+    <nav class="main-nav" id="mainNav" data-visible="true">
+        <div class="container nav-container">
+            <a href="#hero" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">KV/RaMIS</span>
+            </a>
             
-            <div class="hero-stats">
-                <div class="stat" data-count="3" data-speed="100">
-                    <span class="stat-number">3</span>
-                    <span class="stat-label">активных проекта</span>
-                </div>
-                <div class="stat" data-count="15" data-speed="50">
-                    <span class="stat-number">15</span>
-                    <span class="stat-label">лет</span>
-                </div>
-                <div class="stat" data-count="100" data-speed="10">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">самоучка</span>
-                </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#about" class="nav-link"><i class="fas fa-user"></i> <span>Обо мне</span></a>
+                <a href="#tech" class="nav-link"><i class="fas fa-code"></i> <span>Технологии</span></a>
+                <a href="#projects" class="nav-link"><i class="fas fa-rocket"></i> <span>Проекты</span></a>
+                <a href="#philosophy" class="nav-link"><i class="fas fa-heart"></i> <span>Философия</span></a>
+                <a href="#join" class="nav-link"><i class="fas fa-users"></i> <span>Присоединиться</span></a>
             </div>
             
-            <div class="hero-actions">
-                <a href="#projects" class="btn-primary">
-                    <span>Исследовать проекты</span>
-                    <i class="fas fa-arrow-down"></i>
-                </a>
-                <a href="#join" class="btn-secondary">
-                    <span>Присоединиться</span>
-                    <i class="fas fa-users"></i>
-                </a>
-            </div>
-            
-            <div class="scroll-hint">
-                <div class="mouse">
-                    <div class="wheel"></div>
-                </div>
-                <p>Листайте вниз</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Навигация -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="#hero" class="nav-logo">KV/RaMIS</a>
-            <div class="nav-links">
-                <a href="#about">Обо мне</a>
-                <a href="#tech">Технологии</a>
-                <a href="#projects">Проекты</a>
-                <a href="#philosophy">Философия</a>
-                <a href="#join">Присоединиться</a>
-            </div>
-            <button class="nav-toggle" id="navToggle">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
-
-    <!-- Обо мне -->
-    <section class="section about" id="about">
-        <div class="section-header">
-            <h2 class="section-title">Обо мне</h2>
-            <p class="section-subtitle">15-летний разработчик свободного ПО</p>
-        </div>
-        
-        <div class="about-content">
-            <div class="about-card">
-                <div class="about-avatar">
-                    <div class="avatar-placeholder">
-                        <i class="fas fa-code"></i>
-                    </div>
-                </div>
-                <div class="about-info">
-                    <h3>Валерий</h3>
-                    <p class="about-role">Основатель KV/RaMIS Project Group</p>
-                    
-                    <div class="about-details">
-                        <div class="detail">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Россия</span>
-                        </div>
-                        <div class="detail">
-                            <i class="fas fa-laptop-code"></i>
-                            <span>Arch Linux x64 UEFI</span>
-                        </div>
-                        <div class="detail">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span>Самоучка</span>
-                        </div>
-                    </div>
-                    
-                    <p class="about-bio">
-                        С 14 лет увлекаюсь программированием. Начал с Python, теперь разрабатываю операционные системы, 
-                        мессенджеры и изучаю низкоуровневое программирование. Верю в силу открытого кода и сообщества.
+    
+    <!-- Главный контент -->
+    <main>
+        <!-- Герой -->
+        <section class="hero" id="hero">
+            <canvas class="particles-canvas" id="particlesCanvas" aria-hidden="true"></canvas>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">Open Source Community</div>
+                    <h1 class="hero-title">
+                        <span class="gradient-text">KV/RaMIS</span>
+                        Project Group
+                    </h1>
+                    <p class="hero-subtitle">
+                        Свободное программное обеспечение • Открытый код • Сообщество разработчиков
                     </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" data-count="5">0</div>
+                            <div class="stat-label">Активных проекта</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" data-count="15000">0</div>
+                            <div class="stat-label">Строк кода</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Самоучка</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            <span>Смотреть проекты</span>
+                        </a>
+                        <button class="btn btn-secondary" id="quickTerminalBtn">
+                            <i class="fas fa-terminal"></i>
+                            <span>Быстрый терминал</span>
+                        </button>
+                    </div>
+                    
+                    <div class="hero-scroll-hint" aria-hidden="true">
+                        <div class="mouse-scroll"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Технологии -->
-    <section class="section tech" id="tech">
-        <div class="section-header">
-            <h2 class="section-title">Технологический стек</h2>
-            <p class="section-subtitle">Языки, инструменты и окружение</p>
-        </div>
+        </section>
         
-        <div class="tech-grid">
-            <div class="tech-category">
-                <h3><i class="fas fa-code"></i> Активно использую</h3>
-                <div class="tech-tags">
-                    <span class="tech-tag primary">Python</span>
-                    <span class="tech-tag primary">JavaScript</span>
-                    <span class="tech-tag primary">HTML/CSS</span>
-                    <span class="tech-tag primary">C</span>
-                    <span class="tech-tag primary">Assembly</span>
-                    <span class="tech-tag primary">Linux</span>
+        <!-- Обо мне -->
+        <section class="section about" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Обо мне</h2>
+                    <p class="section-subtitle">15 лет, разработчик свободного ПО</p>
                 </div>
-            </div>
-            
-            <div class="tech-category">
-                <h3><i class="fas fa-book"></i> Изучаю</h3>
-                <div class="tech-tags">
-                    <span class="tech-tag secondary">Rust</span>
-                    <span class="tech-tag secondary">C++</span>
-                    <span class="tech-tag secondary">TypeScript</span>
-                    <span class="tech-tag secondary">Java</span>
-                    <span class="tech-tag secondary">C#</span>
-                    <span class="tech-tag secondary">Go</span>
-                </div>
-            </div>
-            
-            <div class="tech-category">
-                <h3><i class="fas fa-history"></i> Имел опыт</h3>
-                <div class="tech-tags">
-                    <span class="tech-tag tertiary">PHP</span>
-                    <span class="tech-tag tertiary">Ruby</span>
-                    <span class="tech-tag tertiary">Lua</span>
-                    <span class="tech-tag tertiary">Pascal</span>
-                    <span class="tech-tag tertiary">HolyC</span>
-                    <span class="tech-tag tertiary">SQL</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tech-env">
-            <div class="env-card">
-                <i class="fab fa-linux"></i>
-                <div>
-                    <h4>Основная ОС</h4>
-                    <p>Arch Linux (x64 UEFI) + i3wm/Tiling</p>
-                </div>
-            </div>
-            <div class="env-card">
-                <i class="fas fa-terminal"></i>
-                <div>
-                    <h4>Рабочий процесс</h4>
-                    <p>VSCode + Neovim + Git + Docker</p>
-                </div>
-            </div>
-            <div class="env-card">
-                <i class="fas fa-server"></i>
-                <div>
-                    <h4>Инфраструктура</h4>
-                    <p>QEMU для KV/OS, самописные утилиты</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Проекты -->
-    <section class="section projects" id="projects">
-        <div class="section-header">
-            <h2 class="section-title">Проекты</h2>
-            <p class="section-subtitle">Активная разработка и исследования</p>
-        </div>
-        
-        <div class="projects-grid">
-            <!-- KV/OS -->
-            <article class="project-card">
-                <div class="project-badge">Системное ПО</div>
-                <div class="project-icon">
-                    <i class="fas fa-desktop"></i>
-                </div>
-                <h3>KV/OS</h3>
-                <p class="project-description">
-                    Экспериментальная операционная система с микроядром. Исследую загрузчики, управление памятью, 
-                    драйверы и планировщики задач.
-                </p>
-                <div class="project-status">
-                    <span class="status-label">Статус:</span>
-                    <span class="status-value planning">Проектирование</span>
-                </div>
-                <div class="project-tech">
-                    <span class="tech-pill">C</span>
-                    <span class="tech-pill">Assembly</span>
-                    <span class="tech-pill">QEMU</span>
-                </div>
-                <div class="project-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 25%"></div>
-                    </div>
-                    <span>25%</span>
-                </div>
-            </article>
-            
-            <!-- KV/CHAT -->
-            <article class="project-card highlight">
-                <div class="project-badge">Сети • Безопасность</div>
-                <div class="project-icon">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <h3>KV/CHAT</h3>
-                <p class="project-description">
-                    Децентрализованный мессенджер с end-to-end шифрованием. P2P архитектура, открытый протокол, 
-                    кроссплатформенность.
-                </p>
-                <div class="project-status">
-                    <span class="status-label">Статус:</span>
-                    <span class="status-value development">Прототип</span>
-                </div>
-                <div class="project-tech">
-                    <span class="tech-pill">Rust</span>
-                    <span class="tech-pill">WebSocket</span>
-                    <span class="tech-pill">Noise Protocol</span>
-                </div>
-                <div class="project-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 40%"></div>
-                    </div>
-                    <span>40%</span>
-                </div>
-                <a href="https://t.me/c/3475532113/4" class="project-link" target="_blank" rel="noopener">
-                    <i class="fab fa-telegram"></i> Присоединиться к разработке
-                </a>
-            </article>
-            
-            <!-- KV/UNIT -->
-            <article class="project-card">
-                <div class="project-badge">Боты • Утилиты</div>
-                <div class="project-icon">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h3>KV/UNIT</h3>
-                <p class="project-description">
-                    Модульный Telegram-бот с постоянно расширяемым функционалом. Управление задачами, интеграции, 
-                    полезные утилиты.
-                </p>
-                <div class="project-status">
-                    <span class="status-label">Статус:</span>
-                    <span class="status-value live">Работает</span>
-                </div>
-                <div class="project-tech">
-                    <span class="tech-pill">Python</span>
-                    <span class="tech-pill">aiogram</span>
-                    <span class="tech-pill">PostgreSQL</span>
-                </div>
-                <div class="project-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 85%"></div>
-                    </div>
-                    <span>85%</span>
-                </div>
-                <a href="https://t.me/kv_unitoffcbot" class="project-link" target="_blank" rel="noopener">
-                    <i class="fab fa-telegram"></i> Попробовать бота
-                </a>
-            </article>
-        </div>
-    </section>
-
-    <!-- Философия -->
-    <section class="section philosophy" id="philosophy">
-        <div class="section-header">
-            <h2 class="section-title">Философия свободы ПО</h2>
-            <p class="section-subtitle">GPL, сообщество и открытый код</p>
-        </div>
-        
-        <div class="philosophy-content">
-            <div class="philosophy-card manifesto">
-                <i class="fas fa-balance-scale"></i>
-                <h3>Манифест</h3>
-                <p>
-                    Мы создаём свободное программное обеспечение. Наш код открыт, наши лицензии — GPL. 
-                    Мы верим в сообщество, а не в монополии.
-                </p>
-                <div class="manifesto-points">
-                    <div class="point">
-                        <i class="fas fa-check"></i>
-                        <span>Право изучать и модифицировать</span>
-                    </div>
-                    <div class="point">
-                        <i class="fas fa-check"></i>
-                        <span>Свобода распространять</span>
-                    </div>
-                    <div class="point">
-                        <i class="fas fa-check"></i>
-                        <span>Открытые протоколы и форматы</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="philosophy-card gpl">
-                <i class="fab fa-gnu"></i>
-                <h3>За GPL, против ограничений</h3>
-                <p>
-                    Мы поддерживаем GNU General Public License и принцип copyleft. Против моделей, которые используют 
-                    открытый код, но ограничивают свободу пользователей проприетарными расширениями.
-                </p>
-                <blockquote>
-                    "Свободное ПО — дело свободы, а не цены"
-                    <cite>— Ричард Столлман</cite>
-                </blockquote>
-            </div>
-            
-            <div class="philosophy-card future">
-                <i class="fas fa-rocket"></i>
-                <h3>Будущее без монополий</h3>
-                <p>
-                    Наша цель — создавать альтернативы проприетарным решениям. KV/OS — против монополий в ОС, 
-                    KV/CHAT — против централизованных мессенджеров. Свобода выбора через свободный код.
-                </p>
-                <div class="callout">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>Забудьте про лицензионные отчисления за базовые свободы</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Присоединиться -->
-    <section class="section join" id="join">
-        <div class="section-header">
-            <h2 class="section-title">Присоединиться к проекту</h2>
-            <p class="section-subtitle">Ищем разработчиков для KV/CHAT и других проектов</p>
-        </div>
-        
-        <div class="join-content">
-            <div class="join-info">
-                <h3>Кого мы ищем:</h3>
-                <ul class="requirements">
-                    <li>Бэкенд-разработчики (Rust, Python, C)</li>
-                    <li>Сетевые программисты</li>
-                    <li>Специалисты по криптографии</li>
-                    <li>Тестировщики и документаторы</li>
-                    <li>Энтузиасты свободного ПО</li>
-                </ul>
                 
-                <div class="join-benefits">
-                    <h3>Что вы получите:</h3>
-                    <div class="benefits-grid">
-                        <div class="benefit">
-                            <i class="fas fa-code-branch"></i>
-                            <p>Реальный опыт в разработке сложных систем</p>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-avatar">
+                            <div class="avatar-circle">
+                                <i class="fas fa-code"></i>
+                            </div>
                         </div>
-                        <div class="benefit">
-                            <i class="fas fa-users"></i>
-                            <p>Сообщество единомышленников</p>
-                        </div>
-                        <div class="benefit">
-                            <i class="fas fa-book-open"></i>
-                            <p>Доступ ко всей документации и коду</p>
-                        </div>
-                        <div class="benefit">
-                            <i class="fas fa-heart"></i>
-                            <p>Участие в проекте с миссией</p>
+                        
+                        <div class="about-info">
+                            <h3>Валерий</h3>
+                            <p class="about-role">Основатель KV/RaMIS</p>
+                            
+                            <div class="about-details">
+                                <div class="detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Россия</span>
+                                </div>
+                                <div class="detail">
+                                    <i class="fab fa-linux"></i>
+                                    <span>Arch Linux x64</span>
+                                </div>
+                                <div class="detail">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Самоучка</span>
+                                </div>
+                            </div>
+                            
+                            <p class="about-bio">
+                                С 14 лет увлекаюсь программированием. Разрабатываю операционные системы, мессенджеры 
+                                и изучаю низкоуровневое программирование. Верю в силу открытого кода и сообщества.
+                            </p>
+                            
+                            <div class="social-links">
+                                <a href="https://t.me/kvramisinfo" class="social-link" target="_blank" rel="noopener">
+                                    <i class="fab fa-telegram"></i>
+                                </a>
+                                <a href="https://github.com/1ardor1gaming1-maker" class="social-link" target="_blank" rel="noopener">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="mailto:1ardor1gaming1@gmail.com" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="join-form">
-                <h3>Связаться с нами</h3>
-                <form id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="Ваше имя" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Email или Telegram" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="4" placeholder="О себе и ваших навыках..." required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <select id="interest">
-                            <option value="">Интересующий проект</option>
-                            <option value="kvchat">KV/CHAT (мессенджер)</option>
-                            <option value="kvos">KV/OS (операционная система)</option>
-                            <option value="other">Другое</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-submit">
-                        <span>Отправить заявку</span>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
+        </section>
+        
+        <!-- Технологии -->
+        <section class="section tech" id="tech">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Технологии</h2>
+                    <p class="section-subtitle">Стек технологий и инструменты</p>
+                </div>
                 
-                <div class="alternative-contact">
-                    <p>Или сразу в Telegram:</p>
-                    <a href="https://t.me/c/3475532113/4" class="telegram-link" target="_blank" rel="noopener">
-                        <i class="fab fa-telegram"></i> Чат разработки KV/CHAT
+                <div class="tech-grid">
+                    <div class="tech-category">
+                        <h3><i class="fas fa-star"></i> Основные</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Rust</span>
+                            <span class="tech-tag">C</span>
+                            <span class="tech-tag">Assembly</span>
+                            <span class="tech-tag">Linux</span>
+                            <span class="tech-tag">Git</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h3><i class="fas fa-book"></i> Изучаю</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Go</span>
+                            <span class="tech-tag">C++</span>
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">C#</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h3><i class="fas fa-tools"></i> Инструменты</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Neovim</span>
+                            <span class="tech-tag">VSCode</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">QEMU</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="env-cards">
+                    <div class="env-card">
+                        <i class="fab fa-linux"></i>
+                        <div>
+                            <h4>Основная ОС</h4>
+                            <p>Arch Linux (x64 UEFI) + i3wm</p>
+                        </div>
+                    </div>
+                    <div class="env-card">
+                        <i class="fas fa-terminal"></i>
+                        <div>
+                            <h4>Рабочий процесс</h4>
+                            <p>VSCode + Neovim + Git + Docker</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Проекты -->
+        <section class="section projects" id="projects">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Проекты</h2>
+                    <p class="section-subtitle">Активная разработка и исследования</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="project-badge">Системное ПО</span>
+                            <span class="project-status status-dev">В разработке</span>
+                        </div>
+                        <h3 class="project-title">KV/OS</h3>
+                        <p class="project-description">
+                            Экспериментальная ОС с микроядром. Исследую загрузчики, управление памятью, драйверы.
+                        </p>
+                        <div class="project-tech">
+                            <span>C</span>
+                            <span>Assembly</span>
+                            <span>QEMU</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 25%"></div>
+                            </div>
+                            <span>25%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card highlight">
+                        <div class="project-header">
+                            <span class="project-badge">Безопасность</span>
+                            <span class="project-status status-proto">Прототип</span>
+                        </div>
+                        <h3 class="project-title">KV/CHAT</h3>
+                        <p class="project-description">
+                            Децентрализованный мессенджер с end-to-end шифрованием. P2P архитектура.
+                        </p>
+                        <div class="project-tech">
+                            <span>Rust</span>
+                            <span>WebSocket</span>
+                            <span>Noise Protocol</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%"></div>
+                            </div>
+                            <span>40%</span>
+                        </div>
+                        <a href="https://t.me/c/3475532113/4" class="project-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Присоединиться к разработке
+                        </a>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="project-badge">Боты</span>
+                            <span class="project-status status-live">Работает</span>
+                        </div>
+                        <h3 class="project-title">KV/UNIT</h3>
+                        <p class="project-description">
+                            Модульный Telegram-бот с расширяемым функционалом. Управление задачами, интеграции.
+                        </p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>aiogram</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                            <span>85%</span>
+                        </div>
+                        <a href="https://t.me/kv_unitoffcbot" class="project-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Попробовать бота
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Философия -->
+        <section class="section philosophy" id="philosophy">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Философия</h2>
+                    <p class="section-subtitle">GPL, сообщество и открытый код</p>
+                </div>
+                
+                <div class="philosophy-grid">
+                    <div class="philosophy-card">
+                        <i class="fab fa-gnu"></i>
+                        <h3>За GPL</h3>
+                        <p>
+                            Мы поддерживаем GNU GPL и принцип copyleft. Против моделей, которые ограничивают 
+                            свободу пользователей проприетарными расширениями.
+                        </p>
+                    </div>
+                    
+                    <div class="philosophy-card">
+                        <i class="fas fa-code"></i>
+                        <h3>Открытый код</h3>
+                        <p>
+                            Весь наш код открыт и доступен для изучения, модификации и распространения. 
+                            Мы верим в силу сообщества.
+                        </p>
+                    </div>
+                    
+                    <div class="philosophy-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Сообщество</h3>
+                        <p>
+                            Наша сила — в сообществе разработчиков и энтузиастов, которые вместе создают 
+                            свободное программное обеспечение.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Присоединиться -->
+        <section class="section join" id="join">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Присоединиться</h2>
+                    <p class="section-subtitle">Стань частью нашего сообщества</p>
+                </div>
+                
+                <div class="join-content">
+                    <div class="join-info">
+                        <h3>Мы ищем:</h3>
+                        <ul class="requirements-list">
+                            <li><i class="fas fa-check"></i> Rust/Python/C разработчиков</li>
+                            <li><i class="fas fa-check"></i> Сетевых программистов</li>
+                            <li><i class="fas fa-check"></i> Специалистов по безопасности</li>
+                            <li><i class="fas fa-check"></i> Тестировщиков</li>
+                            <li><i class="fas fa-check"></i> Энтузиастов свободного ПО</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="join-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <input type="text" placeholder="Ваше имя" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Email или Telegram" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="О себе и навыках..." rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Отправить заявку
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>KV/RaMIS Project Group</h3>
+                    <p>Свободное ПО для всех</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#about">Обо мне</a>
+                    <a href="#projects">Проекты</a>
+                    <a href="#philosophy">Философия</a>
+                    <a href="#join">Присоединиться</a>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="https://t.me/kvramisinfo" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://github.com/kv-ramis" target="_blank">
+                        <i class="fab fa-github"></i>
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Футер -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>KV/RaMIS Project Group</h3>
-                <p>Свободное программное обеспечение для всех</p>
-                <div class="footer-tech">
-                    <span>Arch Linux</span>
-                    <span>•</span>
-                    <span>GPL v3</span>
-                    <span>•</span>
-                    <span>Open Source</span>
-                </div>
-            </div>
             
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>Проекты</h4>
-                    <a href="#projects">KV/OS</a>
-                    <a href="#projects">KV/CHAT</a>
-                    <a href="#projects">KV/UNIT</a>
-                </div>
-                <div class="link-group">
-                    <h4>Ресурсы</h4>
-                    <a href="#philosophy">Философия</a>
-                    <a href="#tech">Технологии</a>
-                    <a href="#join">Присоединиться</a>
-                </div>
-                <div class="link-group">
-                    <h4>Контакты</h4>
-                    <a href="https://t.me/kvramisinfo" target="_blank" rel="noopener">Telegram канал</a>
-                    <a href="https://t.me/kv_unitoffcbot" target="_blank" rel="noopener">Бот KV/UNIT</a>
-                </div>
+            <div class="footer-bottom">
+                <p>© 2026 KV/RaMIS. Весь код под GPL.</p>
+                <p class="footer-credits">Сделано с <i class="fas fa-heart" style="color: #ff4757;"></i> для свободного ПО</p>
             </div>
-            
-            <div class="footer-stats">
-                <div class="stat">
-                    <span id="codeLines">15000</span>
-                    <small>строк кода</small>
-                </div>
-                <div class="stat">
-                    <span id="hoursCoded">1000+</span>
-                    <small>часов разработки</small>
-                </div>
-                <div class="stat">
-                    <span>GPL</span>
-                    <small>лицензия</small>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© <span id="currentYear">2023</span> KV/RaMIS Project Group. Весь код под GPL.</p>
-            <p class="footer-quote">"Сначала они проигнорируют вас, потом будут смеяться над вами, потом будут бороться с вами, а потом вы победите."</p>
         </div>
     </footer>
-
-    <!-- Модальное окно уведомления -->
-    <div class="modal" id="notificationModal">
-        <div class="modal-content">
-            <h3 id="modalTitle">Уведомление</h3>
-            <p id="modalMessage"></p>
-            <button class="modal-close" id="modalClose">Закрыть</button>
+    
+    <!-- Терминал -->
+    <div class="terminal-overlay" id="terminalOverlay">
+        <div class="terminal-container" id="terminalContainer">
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <i class="fas fa-terminal"></i>
+                    <span>KV/RaMIS Terminal</span>
+                </div>
+                <button class="terminal-close" id="terminalClose" aria-label="Закрыть терминал">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="terminal-content" id="terminalContent">
+                <div class="terminal-output">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-text">Добро пожаловать в терминал KV/RaMIS!</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-text">Введите "help" для списка команд</span>
+                    </div>
+                </div>
+                
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" 
+                           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                           placeholder="Введите команду...">
+                </div>
+            </div>
+            
+            <div class="terminal-hotkeys">
+                <small>Подсказка: Нажмите <kbd>`</kbd> для быстрого доступа к терминалу</small>
+            </div>
         </div>
     </div>
-
+    
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Уведомление</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modalOk">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Контейнер для 3D сердечка (скрыт по умолчанию) -->
+    <div class="heart-container" id="heartContainer" style="display: none;">
+        <canvas id="heartCanvas"></canvas>
+        <div class="heart-message">
+            <h2>Сашенька, я так люблю тебя! ❤️</h2>
+            <p>Ты самое лучшее, что случилось со мной</p>
+            <button class="btn btn-primary" id="closeHeart">Закрыть</button>
+        </div>
+    </div>
+    
     <!-- JavaScript -->
     <script src="script.js" defer></script>
     
-    <!-- Минимальная инициализация -->
+    <!-- Инициализация -->
     <script>
         (function() {
-            'use strict';
-            
-            // Текущий год
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            
-            // Прелоадер
-            let progress = 0;
+            // Быстрая инициализация
             const preloader = document.getElementById('preloader');
             const progressBar = preloader.querySelector('.preloader-progress');
             
+            let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.random() * 20;
+                progress += 10 + Math.random() * 20;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
+                    progressBar.style.width = '100%';
                     setTimeout(() => {
                         preloader.style.opacity = '0';
-                        setTimeout(() => preloader.remove(), 300);
-                    }, 300);
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                        }, 300);
+                    }, 200);
                 }
                 progressBar.style.width = progress + '%';
             }, 50);
             
-            // Тема
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.documentElement.classList.add('light-theme');
-                document.documentElement.classList.remove('dark-theme');
-                themeIcon.className = 'fas fa-sun';
-            }
-            
-            themeToggle.addEventListener('click', () => {
-                const isLight = document.documentElement.classList.toggle('light-theme');
-                document.documentElement.classList.toggle('dark-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            // Установка текущего года
+            document.addEventListener('DOMContentLoaded', function() {
+                const yearElements = document.querySelectorAll('[data-year]');
+                const currentYear = new Date().getFullYear();
+                yearElements.forEach(el => {
+                    el.textContent = currentYear;
+                });
             });
         })();
     </script>
