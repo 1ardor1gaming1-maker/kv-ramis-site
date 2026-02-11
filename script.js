@@ -1,7 +1,4 @@
-/**
- * KV/RaMIS Project Group - Ultimate Edition
- * Полностью оптимизированный JavaScript
- */
+
 
 class KVWebsite {
     constructor() {
@@ -36,12 +33,12 @@ class KVWebsite {
         this.setupEventListeners();
         this.setupCounters();
         
-        // Показ сайта после загрузки
+      
         setTimeout(() => this.showSite(), 500);
     }
 
     setupPerformance() {
-        // Отключение анимаций для слабых устройств
+       
         if (navigator.connection?.saveData || navigator.deviceMemory < 4) {
             this.state.particlesEnabled = false;
             document.body.classList.add('reduce-motion');
@@ -80,7 +77,7 @@ class KVWebsite {
             this.components.particles.reduceCount();
         }
         
-        // Отключение тяжёлых анимаций
+        
         document.querySelectorAll('.complex-animation').forEach(el => {
             el.style.animation = 'none';
         });
@@ -96,7 +93,7 @@ class KVWebsite {
             this.showNotification(`Тема: ${newTheme === 'dark' ? 'Тёмная' : 'Светлая'}`);
         });
         
-        // Следим за системными настройками
+      
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         prefersDark.addEventListener('change', (e) => {
             if (!localStorage.getItem('theme')) {
@@ -113,7 +110,7 @@ class KVWebsite {
         const icon = document.querySelector('#themeToggle i');
         icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
         
-        // Обновляем частицы при смене темы
+        
         if (this.components.particles) {
             this.components.particles.updateColors();
         }
@@ -122,8 +119,7 @@ class KVWebsite {
     setupNavigation() {
         const nav = document.getElementById('mainNav');
         const toggleBtn = document.getElementById('toggleNav');
-        
-        // Восстанавливаем состояние
+
         nav.classList.toggle('hidden', !this.state.navVisible);
         
         toggleBtn.addEventListener('click', () => {
@@ -146,7 +142,7 @@ class KVWebsite {
                 : '<i class="fas fa-bars"></i>';
         });
         
-        // Закрытие меню при клике на ссылку
+        
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -154,7 +150,7 @@ class KVWebsite {
             });
         });
         
-        // Активная ссылка при скролле
+     
         this.setupActiveNavigation();
     }
 
@@ -193,7 +189,7 @@ class KVWebsite {
         const terminal = new TerminalSystem();
         this.components.terminal = terminal;
         
-        // Кнопки открытия терминала
+    
         document.getElementById('terminalToggle').addEventListener('click', () => {
             terminal.toggle();
         });
@@ -202,20 +198,20 @@ class KVWebsite {
             terminal.toggle();
         });
         
-        // Горячая клавиша `
+     
         document.addEventListener('keydown', (e) => {
             if (e.key === '`' || e.key === 'ё') {
                 e.preventDefault();
                 terminal.toggle();
             }
             
-            // Escape закрывает терминал
+          
             if (e.key === 'Escape' && terminal.isOpen) {
                 terminal.close();
             }
         });
         
-        // Добавление команды honey))
+       
         terminal.addCommand('honey))', () => {
             terminal.print('❤️ Загрузка секретного сообщения...');
             setTimeout(() => {
@@ -237,14 +233,14 @@ class KVWebsite {
         container.style.display = 'flex';
         this.components.heart.start();
         
-        // Автозакрытие через 10 секунд
+       
         setTimeout(() => {
             container.style.display = 'none';
         }, 10000);
     }
 
     setupAnimations() {
-        // Анимация появления элементов при скролле
+       
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -257,10 +253,10 @@ class KVWebsite {
             observer.observe(el);
         });
         
-        // Прогресс скролла
+      
         this.setupScrollProgress();
         
-        // Кнопка "Наверх"
+     
         this.setupScrollToTop();
     }
 
@@ -288,7 +284,7 @@ class KVWebsite {
     }
 
     setupEventListeners() {
-        // Форма обратной связи
+        
         const form = document.getElementById('contactForm');
         if (form) {
             form.addEventListener('submit', (e) => {
@@ -300,7 +296,7 @@ class KVWebsite {
         // Модальное окно
         this.setupModal();
         
-        // Ресайз окна
+      
         this.setupResizeHandler();
         
         // Heartbeat для мониторинга
