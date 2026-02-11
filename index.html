@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>KV/RaMIS Project Group | Свободное ПО</title>
     
-    <!-- Оптимизированные мета-теги -->
+
     <meta name="description" content="Сообщество разработчиков свободного ПО. Создаём операционные системы, мессенджеры и утилиты с открытым исходным кодом.">
     <meta name="keywords" content="свободное ПО, open source, GPL, Arch Linux, Rust, Python, C, разработка">
-    
-    <!-- PWA -->
+
     <meta name="theme-color" content="#0a0a14" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#f5f7ff" media="(prefers-color-scheme: light)">
     <link rel="manifest" href="/manifest.json">
     
-    <!-- Предзагрузка критических ресурсов -->
+
     <link rel="preload" href="style.css" as="style">
     <link rel="preload" href="script.js" as="script">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Inline Critical CSS (минимальный) -->
+
     <style>
         :root {
             --bg-primary: #0a0a14;
@@ -43,7 +42,7 @@
             transition: background-color 0.3s ease;
         }
         
-        /* Прелоадер */
+        
         .preloader {
             position: fixed;
             top: 0;
@@ -61,7 +60,7 @@
             transition: width 0.3s ease;
         }
         
-        /* Базовые утилиты */
+      
         .sr-only {
             position: absolute;
             width: 1px;
@@ -82,17 +81,17 @@
         }
     </style>
     
-    <!-- Основные стили (асинхронная загрузка) -->
+ 
     <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'; this.onload=null">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
     
-    <!-- Шрифты (оптимизированные) -->
+  
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
-    <!-- Иконки -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
-    <!-- Фавикон -->
+  
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236c63ff%22>⚡</text></svg>">
 </head>
 <body>
@@ -101,12 +100,12 @@
         <div class="preloader-progress"></div>
     </div>
     
-    <!-- Прогресс скролла -->
+  
     <div class="scroll-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
     
     <!-- Плавающие кнопки управления -->
     <div class="floating-controls">
-        <!-- Кнопка скрытия панели -->
+     
         <button class="floating-btn" id="toggleNav" aria-label="Скрыть панель навигации">
             <i class="fas fa-eye-slash"></i>
         </button>
